@@ -1,16 +1,25 @@
 import zmq
-
 import sys
 
-context = zmq.Context()
 
-socket = context.socket(zmq.SUB)
+class WeatherClient:
+	def __init__(self, port, zip):
+		context = zmq.Context()
+		self.socket  = context.socket(zmq.SUB)
+		self.socket.connect('tcp://localhost:' + str(port))
+		self.socket.setsockopt_string(zmq.SUBSCRIBE, str(zip))
 
-socket.connect('tcp://localhost:5556')
+	def receive(self):
+		return (self.socket.recv_string())
 
-socket.setsockopt_string(zmq.SUBSCRIBE, '10001')
+def main():
+	port = sys.argv[1]
+	zip  = sys.argv[2]
+	client = WeatherClient(port, zip)
+	print(client.receive())
+	return 0
 
-str = socket.recv_string()
+if __name__ == '__main__':
+	sys.exit(main())
 
-print(str)
-
+		

@@ -3,7 +3,6 @@ import time
 import sys
 from random import randrange
 
-
 class Weather:
 	def __init__(self):
 		self.zipcode     = 0
@@ -16,7 +15,7 @@ class Weather:
 		self.humidity    = randrange(10, 60)
 	
 
-class BroadcastServer:
+class WeatherServer:
 	def __init__(self, port):
 		self.context = zmq.Context()
 		self.port    = port
@@ -38,7 +37,7 @@ class BroadcastServer:
 
 def main():
 	port = sys.argv[1]
-	server = BroadcastServer(port)
+	server = WeatherServer(port)
 	server.start()
 	
 if __name__ == '__main__':
